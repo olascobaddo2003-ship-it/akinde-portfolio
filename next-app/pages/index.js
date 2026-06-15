@@ -1,5 +1,6 @@
 import Head from 'next/head'
 
+// Vercel root directory fix
 export default function Home() {
   return (
     <>
