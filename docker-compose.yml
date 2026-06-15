@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    image: akinde-portfolio:latest
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+
+  dev:
+    image: node:18
+    working_dir: /app
+    volumes:
+      - ./:/app:delegated
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    command: sh -c "npm install --no-audit --silent && npm run start:dev"
+    environment:
+      - NODE_ENV=development

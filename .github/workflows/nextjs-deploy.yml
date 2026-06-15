@@ -1,0 +1,35 @@
+name: Build and Export Next.js
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        working-directory: ./next-app
+        run: npm ci
+
+      - name: Build Next.js
+        working-directory: ./next-app
+        run: npm run build
+
+      - name: Export static files
+        working-directory: ./next-app
+        run: npm run export
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./next-app/out
